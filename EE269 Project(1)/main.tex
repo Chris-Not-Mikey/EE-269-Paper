@@ -40,7 +40,7 @@ Music Genre Classification of Closely Related Sub-Genres
         \thanks{**The footnote marks may be inserted manually}\\
         Electrical Engineering \\
         Stanford University\\
-        {\tt\small @stanford.edu}}
+        {\tt\small yjiang98@stanford.edu}}
           \hspace*{ 0.5 in}
         \parbox{2 in}{ \centering Louise Zhuang
         \thanks{**The footnote marks may be inserted manually}\\
@@ -112,7 +112,7 @@ There has been less work in looking at very niche sub-genre classification in pa
 
 In another paper, decision trees, random forests, extremely randomised trees, and gradient tree boosting were used to classify 23 EDM subgenres \cite{c6}. The authors were able to achive an accuracy of 59\% without any neural networks involved.
 
-In another paper about classifying 3 subgenres of jazz, neural networks, SVM and KNN were used to classify the subgenres. The authors were able to achieve classification accuries of 79.39\%, 81.67\%, and 77.43\%  respectively \cite{c7}. The authors also found that adding a multi-layer perceptron network before a long term short memory layer in their neural netowork boosted the accuracy to 89.824\.%
+In another paper about classifying 3 subgenres of jazz, neural networks, linear SVM and KNN were used to classify the subgenres. The authors were able to achieve classification accuries of 79.39\%, 67.12\%, and 77.43\%  respectively \cite{c7}. The authors also found that adding a multi-layer perceptron network before a long term short memory layer in their neural netowork boosted the accuracy to 89.824\.%
 
 From this related work, we concluded that while training a neural network looked promising in terms of getting the best results, we also found it necessary to train a KNN and SVM model given that they were likely to produce sufficient albeit perhaps sub par results. 
 
@@ -122,7 +122,7 @@ From this related work, we concluded that while training a neural network looked
 \section{PROCEDURE}
 
 
-\subsection{Data and Pre-processing}
+\subsection{Data collection}
 
 To train our model we collected specifically genre labeled data from Spotify. 578 shoegaze songs and 577 dreampop songs, as labeled by the Record Label of their containing album, were collected and downloaded using the Spotify API.
 The Spotify API only allows a random 30 seconds of the song to be downloaded so all such songs were 30 second samples taken at a random interval. When adding  songs, we added them by the entire album, only excluding songs that did not have 30 second samples or other such audio features and remixed songs from other artists if applicable.
@@ -131,8 +131,16 @@ Not all songs were strictly "dreampop" or strictly "shoegaze". For example some 
 
 After the sample songs were downloaded, the mp3 data per genre was read and stored into on large matrix. This large and randomly split 70\% train samples and 30\% test samples. These samples were then stored in .npy files.
 
-After storing in .npy files, the train and test data was read, converted into a Mels spectogram, then stored once again into respective train and test folders. An example spectogram for the dreampop song "Zebra" by Beachouse is shown below
+\subsection{Data Pre-processing and Feature Extraction}
+From the .npy files the train and test data was read, converted into a Mels spectogram for the purpose of training Neural Network, then stored once again into respective train and test folders. An example spectogram for the dreampop song "Zebra" by Beachouse is shown below
 
+The MFCC was also being extracted as features from each data sample for training the KNN and SVM model. MFCC (Mel-Frequency Cepstral Coefficients) is one of the most commonly used features for audio and speech recognition machine learning purposes. MFCC provides more reliable spectral estimations for audio signals compared to straightforward spectral transformations. 
+
+The calculation of MFCC takes into account the characteristics of audio signals as well as human hearing. Since music genres are human perceived labels, such an audio feature was appropriate for our models. For MFCC, signals are framed into shorter frames to account for the fact of the constantly changing nature of audio signal. The calculation of power spectrum and use of Mel filter bank mimics human hearing where different emphasis is put on different ranges of frequencies. This is represented in wider bands used at higher frequencies, as the focus is on energy rather than variation, whereas it is the opposite for lower frequencies. The final coefficients are obtained through calculating the Discrete Cosine Transform coefficients of the logarithm of the filter bank energies. 
+
+For our purpose, the original mp3 files were being read in with sampling rate of Fs = 22050, thus each 30 seconds data sample has length of 661500. Taking this into account 16 MFCCs are being used, with frame length of 2048 and hop length of 512. 
+
+With the given MFCC feature parameters, for each audio sample, we obtain 16 MFCC with length of 1288. Using the output MFCC as is would result in heavy computational load. To reduce this load, the coefficients for each window were then flattened into a one-dimensional sequence, and principal component analysis (PCA) was performed to reduce the dimensionality of the data for better classification accuracy. PCA compresses data by maintaining feature information in the dimensions of highest variance, thus preserving key information about the Mel spectral features while also de-noising the data.
 
 
 \begin{figure*}
@@ -148,8 +156,12 @@ After storing in .npy files, the train and test data was read, converted into a 
 \newline \,\,
 
 \subsection{SVM Design}
+For this project with SVM, we focused on fitting processed data with linear model. A linear SVM has the goal of finding the hyperplane that produces the largest separation of margin between the categories. Two different optimization schemes Stochastic Gradient Descent (SGD) and Adaptive Moment Estimation (ADAM) were being used. Stochastic gradient descent reduces the computation load comparing to normal gradient descent by randomly selecting data points each time to calculate derivatives. Adam on the other hand, computes the adaptive learning rate for each parameters as well as storing average of past exponential decaying gradient. The hinge loss function shown below was used.\\
+$L = \frac{1}{2} ||w||^2 + \frac{c}{n}\sum_{i=1}^{n}max(0,1-y_iw_ix_i) $\\
+20 epochs with batch size of 30 was used. 
 
-TODO: Talk about the design choices for making the SVM here
+Linear SVM models were generated with all four databases, the hyperparameters including learning rate and C were being tuned. The loss vs. iteration as well as loss vs. accuracy graphs were being plotted and examined. 
+
 \newline \,\,
 
 \subsection{NN Design}
@@ -178,17 +190,37 @@ The results from training our model for KNN, SVM, and NN are shown below
 \newline \,\,
 
 
-\par SVM results :
-\begin{center}
-    \begin{tabular}{ |c|c| }
- SVM Train & SVM Test \\ 
- 0\% & 0\% \\
+\par SVM results :\\
+\quad While achieving similar maximum accuracy, the model generated with Adam optimization algorithm displayed a faster convergence in the loss function plot. Thus the result reported below are based on models generated using Adam optimization algorithm.
 
+\begin{center}
+    
+    \begin{tabular}{ |c|c|c| }
+ Subgenres & SVM Train & SVM Test \\ 
+ Shoegaze vs Dreampop & 72.5\% & 74.5\% \\
+ Progressive vs Math Rock & 69.3\% & 67.1\% \\
+ Progressive vs Tech House & 65.4\% & 65.5\% \\
+ Folk vs Roots Rock & 74.3\% & 65.3\% \\
 \end{tabular}\\
 \end{center}
+\begin{figure}[t]
+\includegraphics[width=8cm]{EE269 Project/frrr_svm.png}
+\caption{Folk Rock vs Roots Rock}
+\end{figure}
+\begin{figure}
+\includegraphics[width=8cm]{EE269 Project/mrpr_svm.png}
+\caption{Math Rock vs Progressive Rock}
+\end{figure}
+\begin{figure}
+\includegraphics[width=8cm]{EE269 Project/phth_svm.png}
+\caption{Progressive House vs Tech House}
+\end{figure}
+\begin{figure}
+\includegraphics[width=8cm]{EE269 Project/sgdp_svm.png}
+\caption{Shoegaze vs Dream pop}
+\end{figure}
 
-
-\par TODO: Dicussion of SVM results
+\par In general, the training and testing accuracy obtained with the data fitted with linear SVM models ranged from mid-sixties to mid-seventies. The model generated on the Shoegaze and Dreampop database demonstrated the highest accuracy. The accurcy of model on Progressive Rock and Math Rock, as well as Progressive House and Tech House are slightly lower. However, these results are expected as they are within the range to results shown in existing paper focusing on similar subject. Moreover, our project focused only on linear models, and existing papers have presented higher result when use other kernel for the SVM. 
 \newline \,\,
 
 
