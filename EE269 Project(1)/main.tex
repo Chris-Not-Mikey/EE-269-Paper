@@ -1,4 +1,4 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %2345678901234567890123456789012345678901234567890123456789012345678901234567890
 %        1         2         3         4         5         6         7         8
 
@@ -46,7 +46,7 @@ Music Genre Classification of Closely Related Sub-Genres
         \thanks{**The footnote marks may be inserted manually}\\
         Electrical Engineering \\
         Stanford University\\
-        {\tt\small @stanford.edu}}
+        {\tt\small llz@stanford.edu}}
 }
 
 % \author{ Chris Calloway$^{1}$, Yiwen Jiang$^{2}$, Louise Zhuang$^{3}$% <-this % stops a space
@@ -76,7 +76,7 @@ Music Genre Classification of Closely Related Sub-Genres
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
 
-This report presents our attempt at training a model to predict music sub-genre labels of closely related musical genres. Musical genres, at their core, are subjective categorical labels based on human perception and consensus. Yet musical genre classification using broader genres (such as rap, rock, classical and jazz) has had much success in the machine learning community. Our goal was to see if such methods could extend to closely related genres to either find the existence (or lacktherof) of a distinction between closely related genres which we call sub-genres.
+This report presents our attempt at training machine learning models to predict music sub-genre labels of closely related musical genres. Musical genres, at their core, are subjective categorical labels based on human perception and consensus. Despite this subjectivity, musical genre classification using broader genres (such as rap, rock, classical and jazz) has had much success using models such as KNN, SVM and Neural Networks (NN). Our goal was to see if such methods could extend to closely related genres  which we call sub-genres of music. We find that such methods are effective but more work needs to be done to achieve even higher accuracies. 
 
 
 
@@ -90,15 +90,17 @@ This report presents our attempt at training a model to predict music sub-genre 
 \subsection{Overview}
 
 Music genres are subjective labels critics and consumers alike put on music for categorization purposes. 
-As a consequence of this subjectivity, the labeling of genres is often controversial and a point of discussion among musical groups. 
+As a consequence of this subjectivity, the labeling of genres is often controversial and a point of discussion among listeners. 
 
-Nonetheless, to a lay observer, what distinguishes rock and roll music from classical music is sonically and empirically obvious. Thus it isn't terribly surprising that machine learning methods applied to the classification of music to broad musical categories (rap, rock and roll, classical, jazz, etc) yields results in excess of 89 \% \cite{c1} \cite{c2} \cite{c3}. Thus despite the subjectivity of music labels, there is enough data within audio samples for both humans and machines alike to confidently classify music into broader genres.
+Nonetheless, to a lay observer, what distinguishes rock and roll music from classical music is sonically and empirically obvious. Thus it isn't terribly surprising that machine learning methods for the classification of broad musical categories (rap, rock and roll, classical, jazz, etc) yields results in excess of 89 \% \cite{c1} \cite{c2} \cite{c3}. Thus despite the subjectivity of music labels, there is enough data within audio samples for both humans and machines alike to confidently classify music into broader genres.
 
-But what about more closely related genres? In this paper we consider the rock and roll subgenres of Shoegaze and Dreampop. Fans and critics are split on what (if anything) defines the difference between the two genres. Is there enough evidence in the audio data to find such a distinction? 
+But what about more closely related genres? In other words, what happens when we remove the assumption of broad genres for music genre classification and instead use niche genres of music with only slight sonical differences?  To answer this we attempt to train machine learning models on very closely related sub-genres of music. 
 
-A critical assumption we made before attempting to answer this question is that there is a ground truth sub genre label for these sub genres. That is, we take the genre, either "shoegaze" or "dreampop", that the artist's record label officially assigned to a particular album without regard to any fan or critical debate of the accurateness. We used a collection of these officially labeled "dreampop" or "shoegaze" albums from various artists and various record labels as our audio data for our training.
+In this paper we consider the following sub-genres of closely related music: Shoegaze vs. Dream pop, Math rock vs. Post Rock, Roots rock vs. Folk rock, and Progressive house vs. Tech house. Fans and critics are split on what exactly defines the difference between these sets of genres. Can machine learning methods find such the distinction? 
 
-Our results indicate that with our assumption in place: 
+Before attempting to answer this, we make a critical assumption. We assume that there is a ground truth sub-genre label for these sub-genres. To that end, we get this ground truth label from the artist's record label. The record label for an artist is what officially assigns a genre to a particular album, and they do so without regard to any fan or critical debate of the accurateness \cite{c8}. Thus this gives us a solid ground truth label to build our labels upon. Thus, our training data is then a collection of these officially labeled albums from various artists and various record labels.
+
+After collecting and pre-processing our data, our results indicate that we can get accuracies upwards of 83\%  for classifying closely related sub-genres. The best results occur for NN approaches, but results upwards of 77\% were also achieved for KNN and SVM approaches. Our results indicate a need for larger databases, but also indicate that Neural Networks are a promising approach for music sub-genre classification. 
 
 
 
@@ -106,15 +108,15 @@ Our results indicate that with our assumption in place:
 \subsection{Related Work}
 
 
-There has been lots of work in the field of music genre classification. As mentioned in the overview, the results of various machine learning classifiers is upwards of 89\%, with the best being the CNN such as \cite{c4}. 
+There has been lots of work in the field of machine learning approaches to music genre classification. As mentioned in the overview, the results of various machine learning classifiers is upwards of 89\%, with the best being Convolutional Neural Networks (CNN),  such as \cite{c4}. 
 
-There has been less work in looking at very niche sub-genre classification in particular. One such attempt was made to classify Metal Sub-genres in \cite{c5}. In this paper, 30 second samples of songs from sub genre specific Spotify playlists were taken for various metal sub-genres such as black metal and thrash metal. The audio data was then converted into Mel spectograms. This data was split into 80\% training data and 20\% testing data and then was fed into a Convolutional Recurrent Neural Network. After training, the network was able to predict metal sub-genres on the test set with a 62\% accuracy. 
+However, there has been less work in looking at very niche sub-genre classification. One such attempt was made to classify Metal sub-genres in \cite{c5}. In this paper, 30 second samples of songs from sub-genre specific Spotify playlists were taken for various metal sub-genres such as Black metal and Thrash metal. The audio data was then converted into Mel spectrograms. This data was split into 80\% training data and 20\% testing data and then was fed into a Convolutional Recurrent Neural Network. After training, the network was able to predict metal sub-genres on the test set with a 62\% accuracy. 
 
-In another paper, decision trees, random forests, extremely randomised trees, and gradient tree boosting were used to classify 23 EDM subgenres \cite{c6}. The authors were able to achive an accuracy of 59\% without any neural networks involved.
+In another paper, decision trees, random forests, extremely randomised trees, and gradient tree boosting were used to classify 23 related EDM sub-genres \cite{c6}. The authors were able to achieve an accuracy of 59\% without any Neural Networks involved. 
 
-In another paper about classifying 3 subgenres of jazz, neural networks, linear SVM and KNN were used to classify the subgenres. The authors were able to achieve classification accuries of 79.39\%, 67.12\%, and 77.43\%  respectively \cite{c7}. The authors also found that adding a multi-layer perceptron network before a long term short memory layer in their neural netowork boosted the accuracy to 89.824\.%
+In another paper about classifying 3 sub-genres of jazz, Neural Networks, linear SVM and KNN were used to classify the sub-genres. The authors were able to achieve classification accuracies of 79.39\%, 67.12\%, and 77.43\%  respectively \cite{c7}. The authors also found that adding a multi-layer perceptron network before a long term short memory layer in their Neural Network boosted the accuracy to 89.824\.%
 
-From this related work, we concluded that while training a neural network looked promising in terms of getting the best results, we also found it necessary to train a KNN and SVM model given that they were likely to produce sufficient albeit perhaps sub par results. 
+From this related work, we concluded that a Neural Network model looked the most promising in terms of accuracy. However, we also determined a KNN and SVM model were likely to produce sufficient results based on the success of \cite{c7}. The work done on decision trees, and random forests models did not seem to be successful enough to warrant an attempt. Thus from this review, we decided to train a KNN, SVM, and NN model for each sub-genre. Furthermore, we found the Spotify data collection method in \cite{c5} to be a promising approach for our own data collection. We discuss this more below.
 
 
 
@@ -124,36 +126,86 @@ From this related work, we concluded that while training a neural network looked
 
 \subsection{Data collection}
 
-To train our model we collected specifically genre labeled data from Spotify. 578 shoegaze songs and 577 dreampop songs, as labeled by the Record Label of their containing album, were collected and downloaded using the Spotify API.
-The Spotify API only allows a random 30 seconds of the song to be downloaded so all such songs were 30 second samples taken at a random interval. When adding  songs, we added them by the entire album, only excluding songs that did not have 30 second samples or other such audio features and remixed songs from other artists if applicable.
 
-Not all songs were strictly "dreampop" or strictly "shoegaze". For example some were labled as "dreampop and etheral pop" or "shoegaze and noise rock". We allowed for such genre blends in our dataset. However, an album that was labeled as "dreampop and shoegaze" was not allowed. We restricted our dataset to allow only one album per artist to encourage a varkety of artists in our database. To determine which album to add to the database we picked the earliest released album with the proper label. Note that in some cases an artist would have a release as "shoegaze" and perhaps later in their discography a release as "dreampop". We allowed for this, so in some cases an artist appears in both the shoegaze and the dreampop datasets with different albums. 
+Similar to \cite{c5}, to train our model we collected albums of songs using the Spotify API from genre labeled Spotify playlists. Spotify’s API came with a number of constraints and useful features.
 
-After the sample songs were downloaded, the mp3 data per genre was read and stored into on large matrix. This large and randomly split 70\% train samples and 30\% test samples. These samples were then stored in .npy files.
+A major constraint is that the API only allows a random 30 seconds of raw audio data be downloaded to an MP3 format. While this was limiting, it did simplify the feature extraction part of pre-processing since there was no ambiguity as to how long the audio sample should be or which portion of the song to pull from. A useful feature of the Spotify API is that it provides its own audio features for songs such as key, tempo, loudness, acousticness, danceability, and instrumentalness. The challenge with these features is figuring out how normalize the values (including strings) and also understanding the quantitative nature of these measurements. For instance, it is no clear in the Spotify API documentation what the quantitative measure "danceability" really is. For these reasons we did not use these features in our model training, however we collected them in our database anyways for potential future work. Another limitation of the Spotify API is that not every song has a 30 second raw audio data preview and some do no not have the other audio features mentioned above. It is unclear why some songs do not have these, but for our data collection we simply rejected any songs that lacked either of these.
+
+
+Spotify playlists are a convenient way of collecting data so that Spotify API requests can easily pull data from them. Unlike \cite{c5}, we did not use pre-existent Spotify playists for our labeled data. Instead, we created our own Spotify playlists based on the genre labels given by the artist’s record label. The full methodology to generate a playlist is described step by step below. 
+
+\begin{enumerate}
+    \item Select a genre. For instance "Dream pop"
+    \item Find a comprehensive list of artists for a specific genre. Wikipedia has a good articles for this, for example the "List of Dream pop artists" article
+    \item Pick an artist from the list at random that we have not already picked
+    \item Find the first album the artist released in which the record label gave the album the desired genre
+    \begin{enumerate}
+        \item If the record label gave it multiple genres that matched the genre we are comparing against, for example Dream pop and Shoegaze, we reject it and move on to the next album in the artists discography. If there are no relevant albums left, then move back to step 3
+        \item Else if the record label gave it it multiple genres that don't overlap with what we are comparing against, for instance Dream pop and Ethereal pop, we allow it and add all the songs on the album to the Spotify playlist and then move to back to step 3
+        \item If the record label genre exactly matches (for instance just Dream pop) then we add all the songs on the album to the playlist
+    \end{enumerate}
+
+    \item We repeat from step 3 until we have 600 songs in our playlist
+    \item We repeat from step 1 until we have playlists for each genre
+    \item Finally we use the Spotify API to download the 30 seconds MP3 samples and other audio features for each song in each playlist and store them in .npy files.
+\end{enumerate}
+
+There are a couple of important caveats to the above procedure that are worth mentioning. For any album that was collected, every song on album was added. The only exceptions were that remixes, and non musical content (ie interviews) were excluded. Furthermore, an artist could only appear once per playlist. However, nothing prohibited an artist from appearing in multiple playlists. Thus it was possible the same artists could in appear in both the Dream pop and the Shoegaze playlist, or any other playlists for that matter. Lastly, in some cases there were not 600 songs available on Spotify for a sub-genre. The total number of songs downloaded to our data base using the Spotify API per genre are outlined below. Note: none reach 600 since we remove any songs that did not have 30 seconds previews or the other audio feature data.
+
+\begin{enumerate}
+    \item Dream pop: 577
+    \item Shoegaze: 578
+    \item Math rock:   578
+    \item Post rock: 580
+    \item Folk rock: 169       
+    \item  Roots rock: 193
+    \item Tech house: 349
+    \item Progressive house: 360
+\end{enumerate}
+
+Finally this data was split into 70\% train, 20\% validation, and 10\% test. Before training the models, the following pre-processing was done.
+
+
+%  OLD VERSION:
+ 
+
+%To train our model we collected specifically genre labeled data from Spotify. 578 shoegaze songs and 577 dreampop songs, as labeled by the Record Label of their containing album, were collected and downloaded using the Spotify API.
+% The Spotify API only allows a random 30 seconds of the song to be downloaded so all such songs were 30 second samples taken at a random interval. When adding  songs, we added them by the entire album, only excluding songs that did not have 30 second samples or other such audio features and remixed songs from other artists if applicable.
+
+% Not all songs were strictly "dreampop" or strictly "shoegaze". For example some were labled as "dreampop and etheral pop" or "shoegaze and noise rock". We allowed for such genre blends in our dataset. However, an album that was labeled as "dreampop and shoegaze" was not allowed. We restricted our dataset to allow only one album per artist to encourage a varkety of artists in our database. To determine which album to add to the database we picked the earliest released album with the proper label. Note that in some cases an artist would have a release as "shoegaze" and perhaps later in their discography a release as "dreampop". We allowed for this, so in some cases an artist appears in both the shoegaze and the dreampop datasets with different albums. 
+
+% After the sample songs were downloaded, the mp3 data per genre was read and stored into on large matrix. This large and randomly split 70\% train samples and 30\% test samples. These samples were then stored in .npy files.
 
 \subsection{Data Pre-processing and Feature Extraction}
-From the .npy files the train and test data was read, converted into a Mels spectogram for the purpose of training Neural Network, then stored once again into respective train and test folders. An example spectogram for the dreampop song "Zebra" by Beachouse is shown below
 
-The MFCC was also being extracted as features from each data sample for training the KNN and SVM model. MFCC (Mel-Frequency Cepstral Coefficients) is one of the most commonly used features for audio and speech recognition machine learning purposes. MFCC provides more reliable spectral estimations for audio signals compared to straightforward spectral transformations. 
+
+From the .npy files, MFCC coefficients were extracted as features from each data sample for training the KNN and SVM models. MFCC (Mel-Frequency Cepstral Coefficients) is one of the most commonly used features for audio and speech recognition machine learning purposes. MFCC provides more reliable spectral estimations for audio signals compared to straightforward spectral transformations. 
 
 The calculation of MFCC takes into account the characteristics of audio signals as well as human hearing. Since music genres are human perceived labels, such an audio feature was appropriate for our models. For MFCC, signals are framed into shorter frames to account for the fact of the constantly changing nature of audio signal. The calculation of power spectrum and use of Mel filter bank mimics human hearing where different emphasis is put on different ranges of frequencies. This is represented in wider bands used at higher frequencies, as the focus is on energy rather than variation, whereas it is the opposite for lower frequencies. The final coefficients are obtained through calculating the Discrete Cosine Transform coefficients of the logarithm of the filter bank energies. 
 
-For our purpose, the original mp3 files were being read in with sampling rate of Fs = 22050, thus each 30 seconds data sample has length of 661500. Taking this into account 16 MFCCs are being used, with frame length of 2048 and hop length of 512. 
+For our purpose, the original mp3 files were read in with sampling rate of Fs = 22050, thus each 30 seconds data sample has length of 661500. Taking this into account 16 MFCCs were used, with frame length of 2048 and hop length of 512. 
 
 With the given MFCC feature parameters, for each audio sample, we obtain 16 MFCC with length of 1288. Using the output MFCC as is would result in heavy computational load. To reduce this load, the coefficients for each window were then flattened into a one-dimensional sequence, and principal component analysis (PCA) was performed to reduce the dimensionality of the data for better classification accuracy. PCA compresses data by maintaining feature information in the dimensions of highest variance, thus preserving key information about the Mel spectral features while also de-noising the data.
 
 
 \begin{figure*}
   \includegraphics[width=\textwidth, height=6cm]{Screen Shot 2021-04-16 at 6.40.00 PM.png}
-  \caption{Sample Spectogram}
+  \caption{Sample Spectrogram}
 \end{figure*}
 
 
 \subsection{KNN Design}
 
-\newline \,\,
-\nelwine TODO: Talk about the design choices for making the KNN here
-\newline \,\,
+Initially, a k-nearest neighbors (KNN) classifier was used to classify thirty-second song samples between two subgenres. 
+Classification of a test sample is determined by the mode of the k closest samples from the training data in the feature space, as shown in Figure \ref{fig:knnimg}. The Euclidean (L2) distance metric was used to determine closeness for this project.
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=.3\textwidth]{knn_graphic.png}
+  \caption{Diagram illustrating KNN classification with example data as shapes.}
+  \label{fig:knnimg}
+\end{figure}
+
+Sixteen mel frequency cepstral coefficients (MFCCs) were calculated for each sample with a window size of 2048 samples and hop length of 512 samples. The MFCCs were used since they better represent the spectrum for human hearing, which is relevant for music classification. Principal component analysis (PCA) was then performed on the MFCC coefficients to reduce the dimensionality of the data while maintaining the dimensions with the most variance. To find the highest test classification accuracy, the number of principal components was varied from 16 to 19, and the number of nearest neighbors used to classify the data was varied from 2 to 30. 
 
 \subsection{SVM Design}
 For this project with SVM, we focused on fitting processed data with linear model. A linear SVM has the goal of finding the hyperplane that produces the largest separation of margin between the categories. Two different optimization schemes Stochastic Gradient Descent (SGD) and Adaptive Moment Estimation (ADAM) were being used. Stochastic gradient descent reduces the computation load comparing to normal gradient descent by randomly selecting data points each time to calculate derivatives. Adam on the other hand, computes the adaptive learning rate for each parameters as well as storing average of past exponential decaying gradient. The hinge loss function shown below was used.\\
@@ -164,30 +216,89 @@ Linear SVM models were generated with all four databases, the hyperparameters in
 
 \newline \,\,
 
+\subsection{NN pre-processing and Spectrogram Generation}
+
+While it is possible to train a Neural Network with MFCC features, we decided that with our limited amount of data a better approach might be to use transfer learning. Transfer learning is the process of retraining the final layers of a pre-trained network to target a new output of classes. There are many state of the art of the art pretrained image classifiers available for use in the Pytorch library. To utilize this then, we want to turn our classification problem into in image classification problem. A reasonable way of doing this was converting our data stored in the .npy files into Mel spectrograms instead of extracting MFCC coefficients.
+
+A spectrogram is a way of representing a non-periodic signal’s frequency components over time. This is done by taking a short-time Fourier transform of the data over several overlapping windows of the signal, and then stacking this data together to get the relative amplitudes of frequencies components vs time. 
+
+A Mel spectrogram adjusts the spectrogram described above for human perception, which is ideal for human subjective labels like music genres. The Mel spectrum is shown below
+
+
+Thus the Mel spectrogram is simply a spectrogram except the frequencies have been converted to Mel frequencies by using the graph above. An example of a Dream pop and a Shoegaze log Mel spectrogram are shown below.
+
+
+Thus with converting our data to Mel spectrograms we have changed our problem to an image classification problem. These data are then easy to feed into a pretrained network in which we adjust the final layer to target Mel spectrograms instead of standard images. 
+
 \subsection{NN Design}
 
-TODO: Talk about the design choices for making the NN here
+The obvious visual difference in the log Mel spectrograms shown above was good indication that an image classier would work well for a Neural Network. For our pre-trained network we chose VGG 16, a model that scores 92.7\% on the Imagenet database. The architecture for the VGG 16 network is shown below.
+
+
+
+We froze all of the layers of the VGG 16 model, and replaced the final layer with our own fully connected layer to distinguish between two classes (for example Dream pop vs Shoegaze). We then used our train and validation data to train the weights for this final layer. For this training, we used a cross entropy loss function, stochastic gradient descent with a momentum of 0.9, and a learning rate of 0.001 over 50 epochs. A system with 8 CPUs was used to reduce training times. Before any training, the base VGG 16 model gave an average test accuracy for each genre comparison of 50.64\%. The full results after training for each is shown below.
+
+
 \newline \,\,
 
 
-\section{Results}
+\section{Results and Discussion}
 
 The results from training our model for KNN, SVM, and NN are shown below
 \newline \,\,
 
-\par KNN Results (probably don't need to split this in train/test (TODO FIX)
+\par KNN Results
 
-\begin{center}
-    \begin{tabular}{ |c|c| }
- KNN Train & KNN Test  \\ 
- 0\% & 0\% \\
+\begin{table}[!hb]
+    \begin{center}
+    \caption{Table of KNN Classification Accuracies}{\label{tab:knn_acc}}
+    \begin{tabular}{ |c|c|c| }
+      Comparison & Test Acc. & Parameters \\ 
+      Shoegaze \& Dreampop & 77.49\% & 17 PC, 18 N\\
+      Math \& Post Rock & 68.50\% & 19 PC, 10 N\\
+      Prog. \& Tech House & 66.50\% & 19 PC, 24 N\\
+      Folk \& Roots Rock & 72.28\% & 17 PC, 5 N\\
+     
+    \end{tabular}\\
+    \end{center}
+    KNN classifier test accuracies for the four sub-genre comparisons (PC = principal components, N = number of nearest neighbors). 
+\end{table}
 
-\end{tabular}\\
+\par When classifying songs between the sub-genres, the test accuracies ranged from 66.50\% to 77.49\%, as detailed in Table \ref{tab:knn_acc}. The accuracies as the number of principal components and neighbors were varied are shown in Figure \ref{fig:knngraphs}. 
+This accuracy range for classification indicates that a reasonable difference exists between similar subgenres using compressed information from cepstral features; however, classification could be further improved with more complex classifiers. 
 
-\end{center}
+% Can resize these to be full-sized figures if desired
+\begin{figure}[!hb] 
+  \begin{subfigure}{.23\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{knnplot_dpsg.png}
+    \caption{Dreamp. vs. Shoeg.}
+    \label{fig:knngraph1}
+  \end{subfigure}
+  \begin{subfigure}{.23\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{knnplot_mrpr.png}
+    \caption{Math vs. Post Rock}
+    \label{fig:knngraph2}
+  \end{subfigure}
+\newline
+  \begin{subfigure}{.23\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{knnplot_frrr.png}
+    \caption{Folk vs. Roots Rock}
+    \label{fig:knngraph3}
+  \end{subfigure}
+  \begin{subfigure}{.23\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{knnplot_thph.png}
+    \caption{Tech vs. Prog. House}
+    \label{fig:knngraph4}
+  \end{subfigure}
+  \caption{Plots showing changes in KNN classifier accuracy as the number of principal components and number of neighbors used for classification are varied for the four different sub-genre comparisons.}
+  \label{fig:knngraphs}
+\end{figure}
 
-\par TODO: Dicussion of KNN results
-\newline \,\,
+
 
 
 \par SVM results :\\
@@ -198,9 +309,9 @@ The results from training our model for KNN, SVM, and NN are shown below
     \begin{tabular}{ |c|c|c| }
  Subgenres & SVM Train & SVM Test \\ 
  Shoegaze vs Dreampop & 72.5\% & 74.5\% \\
- Progressive vs Math Rock & 69.3\% & 67.1\% \\
- Progressive vs Tech House & 65.4\% & 65.5\% \\
- Folk vs Roots Rock & 74.3\% & 65.3\% \\
+ Post vs Math rock & 69.3\% & 67.1\% \\
+ Progressive vs Tech house & 65.4\% & 65.5\% \\
+ Folk vs Roots rock & 74.3\% & 65.3\% \\
 \end{tabular}\\
 \end{center}
 \begin{figure}[t]
@@ -220,37 +331,41 @@ The results from training our model for KNN, SVM, and NN are shown below
 \caption{Shoegaze vs Dream pop}
 \end{figure}
 
-\par In general, the training and testing accuracy obtained with the data fitted with linear SVM models ranged from mid-sixties to mid-seventies. The model generated on the Shoegaze and Dreampop database demonstrated the highest accuracy. The accurcy of model on Progressive Rock and Math Rock, as well as Progressive House and Tech House are slightly lower. However, these results are expected as they are within the range to results shown in existing paper focusing on similar subject. Moreover, our project focused only on linear models, and existing papers have presented higher result when use other kernel for the SVM. 
+\par In general, the training and testing accuracy obtained with the data fitted with linear SVM models ranged from mid-sixties to mid-seventies. The model generated on the Shoegaze and Dreampop database demonstrated the highest accuracy. The accuracy of model on Progressive Rock and Math Rock, as well as Progressive House and Tech House are slightly lower. However, these results are expected as they are within the range to results shown in existing paper focusing on similar subject. Moreover, our project focused only on linear models, and existing papers have presented higher result when use other kernel for the SVM. 
 \newline \,\,
 
 
 
 \par Our NN results are as follows:
 \begin{center}
-    \begin{tabular}{ |c|c| }
- NN Train & NN Test \\ 
- 0\% & 0\%  \\
-
+    
+    \begin{tabular}{ |c|c|c| }
+ Subgenres & NN Train & NN Test \\ 
+ Shoegaze vs Dreamp pop &  83.40\% & 84.20\% \\
+ Post vs Math rock & 81.10\% & 80.70\% \\
+ Progressive vs Tech house & 71.30\% & 70.70\% \\
+ Folk vs Roots rock & 75.10\% & 70.50\% \\
 \end{tabular}\\
 \end{center}
 
 
-\par TODO: Dicussion of NN results
+\par While none of the results were greater than 90\%, the results, in particular for Shoegaze vs Dream pop and Math rock vs Post rock were quite high with both being better than 80\%. Comparing this with \cite{c7} we see our results are similar indicating this transfer learning method has worked well. We notice, however, that we do not get quite as  
+good results for the other two genre classifications, with both around 70\% accuracy. We note that there was considerably less data for these classes of data, and this is likely why we see such a stark difference in results. We speculate that with more data for each genre, and perhaps an even finer tuned model, we could achieve results upwards of 89\% similar to \cite{c7}
+
+
 \newline \,\,
 
 
 
- 
+\section{Conclusion and Future Work}
 
-\section{Discussion}
+In the discussion of our results above, we can see that the methods of KNN, SVM, and NN applied to classification problem of closely related music sub-genres does work quite well. However, a key constraint to these results is the quantity of labeled data. Where less data was publicly available, the results suffered. Therefore we reasonably conclude that while our results are good, they will likely get better with addition of more data.   
 
-TODO: Dicussion of all results
+Furthermore, we note that Neural Networks are clearly the superior model for classifying closely related music sub-genres. This result is likely because the model was built on top of a pre-trained and highly accurate image classifier. Nonetheless, this method of transfer learning produced better results across the board even with limited amounts of data. 
 
+There are a number of improvements that could be made for future work in this domain. First and probably most important would be to use a different audio collection strategy. While the Spotify API is convenient, the restriction to random 30 second samples is an extreme hindrance to the flexibility of the data collection. It is likely that if we had more control of this process our accuracies would increases because at the moment nothing is stopping 30 seconds of mostly silence from appearing in a given playlist.Second, considering that transfer learning worked the best, it is a good idea to explore different pre-trained models. Furthermore, we mentioned in our data collection process that we collected the Spotify defined audio features. Using the collected features to supplement our audio features could also provide an additional boost in accuracy. Lastly, it would be informative to extend our classification to a mutli-class system. That is, instead of doing binary comparisons, we could pick $N$ closely related sub-genres and classify the difference. 
 
-\section{Conclusion}
-
-
-TODO: Conclusion based on results
+To conclude, machine learning methods, in particular Neural Networks, work well at classifying closely related music sub-genres. However, my work needs to be done to push these results to greater than 90\% accuracy. 
 
 
 
@@ -281,6 +396,9 @@ recurrent neural networks. 2020
 
 
 \bibitem{c7} R. J. M. Quinto, R. O. Atienza and N. M. C. Tiglao, "Jazz music sub-genre classification using deep learning," TENCON 2017 - 2017 IEEE Region 10 Conference, 2017, pp. 3111-3116, doi: 10.1109/TENCON.2017.8228396.
+
+
+\bibitem{c8} https://indiepanda.net/what-do-record-labels-look-for/
 
 
 \end{thebibliography}
