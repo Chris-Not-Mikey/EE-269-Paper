@@ -188,12 +188,6 @@ For our purpose, the original mp3 files were read in with sampling rate of Fs = 
 With the given MFCC feature parameters, for each audio sample, we obtain 16 MFCC with length of 1288. Using the output MFCC as is would result in heavy computational load. To reduce this load, the coefficients for each window were then flattened into a one-dimensional sequence, and principal component analysis (PCA) was performed to reduce the dimensionality of the data for better classification accuracy. PCA compresses data by maintaining feature information in the dimensions of highest variance, thus preserving key information about the Mel spectral features while also de-noising the data.
 
 
-\begin{figure*}
-  \includegraphics[width=\textwidth, height=6cm]{Screen Shot 2021-04-16 at 6.40.00 PM.png}
-  \caption{Sample Spectrogram}
-\end{figure*}
-
-
 \subsection{KNN Design}
 
 Initially, a k-nearest neighbors (KNN) classifier was used to classify thirty-second song samples between two subgenres. 
@@ -222,10 +216,34 @@ While it is possible to train a Neural Network with MFCC features, we decided th
 
 A spectrogram is a way of representing a non-periodic signal’s frequency components over time. This is done by taking a short-time Fourier transform of the data over several overlapping windows of the signal, and then stacking this data together to get the relative amplitudes of frequencies components vs time. 
 
-A Mel spectrogram adjusts the spectrogram described above for human perception, which is ideal for human subjective labels like music genres. The Mel spectrum is shown below
+A Mel spectrogram adjusts the spectrogram described above for human perception, which is ideal for human subjective labels like music genres. The Mel spectrum is shown in figure ()
+
+\begin{figure}
+\begin{center}
+    \includegraphics[width=4cm]{melspectrum.png}
+\caption{Mel spectrum}
+\end{center}
+
+\end{figure}
 
 
 Thus the Mel spectrogram is simply a spectrogram except the frequencies have been converted to Mel frequencies by using the graph above. An example of a Dream pop and a Shoegaze log Mel spectrogram are shown below.
+
+\begin{figure}
+\begin{center}
+    \includegraphics[width=4cm]{dreampop_spectrogram.png}
+\caption{Log Mel Spectrogram of Dream pop Song}
+\end{center}
+
+\end{figure}
+
+
+\begin{figure}
+\begin{center}
+    \includegraphics[width=4cm]{shoegaze_spectrogram.png}
+\caption{Log Mel Spectrogram of Shoegaze Song}
+\end{center}
+\end{figure}
 
 
 Thus with converting our data to Mel spectrograms we have changed our problem to an image classification problem. These data are then easy to feed into a pretrained network in which we adjust the final layer to target Mel spectrograms instead of standard images. 
@@ -234,6 +252,12 @@ Thus with converting our data to Mel spectrograms we have changed our problem to
 
 The obvious visual difference in the log Mel spectrograms shown above was good indication that an image classier would work well for a Neural Network. For our pre-trained network we chose VGG 16, a model that scores 92.7\% on the Imagenet database. The architecture for the VGG 16 network is shown below.
 
+\begin{figure}
+\begin{center}
+    \includegraphics[width=4cm]{VGG16acc.png}
+\caption{Neural Network Architecture for VGG 16}
+\end{center}
+\end{figure}
 
 
 We froze all of the layers of the VGG 16 model, and replaced the final layer with our own fully connected layer to distinguish between two classes (for example Dream pop vs Shoegaze). We then used our train and validation data to train the weights for this final layer. For this training, we used a cross entropy loss function, stochastic gradient descent with a momentum of 0.9, and a learning rate of 0.001 over 50 epochs. A system with 8 CPUs was used to reduce training times. Before any training, the base VGG 16 model gave an average test accuracy for each genre comparison of 50.64\%. The full results after training for each is shown below.
@@ -315,19 +339,19 @@ This accuracy range for classification indicates that a reasonable difference ex
 \end{tabular}\\
 \end{center}
 \begin{figure}[t]
-\includegraphics[width=8cm]{EE269 Project/frrr_svm.png}
+\includegraphics[width=8cm]{frrr_svm.png}
 \caption{Folk Rock vs Roots Rock}
 \end{figure}
 \begin{figure}
-\includegraphics[width=8cm]{EE269 Project/mrpr_svm.png}
+\includegraphics[width=8cm]{mrpr_svm.png}
 \caption{Math Rock vs Progressive Rock}
 \end{figure}
 \begin{figure}
-\includegraphics[width=8cm]{EE269 Project/phth_svm.png}
+\includegraphics[width=8cm]{phth_svm.png}
 \caption{Progressive House vs Tech House}
 \end{figure}
 \begin{figure}
-\includegraphics[width=8cm]{EE269 Project/sgdp_svm.png}
+\includegraphics[width=8cm]{sgdp_svm.png}
 \caption{Shoegaze vs Dream pop}
 \end{figure}
 
@@ -349,8 +373,14 @@ This accuracy range for classification indicates that a reasonable difference ex
 \end{center}
 
 
-\par While none of the results were greater than 90\%, the results, in particular for Shoegaze vs Dream pop and Math rock vs Post rock were quite high with both being better than 80\%. Comparing this with \cite{c7} we see our results are similar indicating this transfer learning method has worked well. We notice, however, that we do not get quite as  
+\par While none of the results were greater than 90\%, the results, in particular for Shoegaze vs. Dream pop and Math rock vs Post rock were quite high with both being better than 80\%. A accuract vs epoch curve for Shoegaze vs Dreampop is shown in figure (). Comparing this with \cite{c7} we see our results are similar indicating this transfer learning method has worked well. We notice, however, that we do not get quite as  
 good results for the other two genre classifications, with both around 70\% accuracy. We note that there was considerably less data for these classes of data, and this is likely why we see such a stark difference in results. We speculate that with more data for each genre, and perhaps an even finer tuned model, we could achieve results upwards of 89\% similar to \cite{c7}
+
+
+\begin{figure}
+\includegraphics[width=8cm]{nn_train.png}
+\caption{Accuracy vs Epoch for Dreampop vs Shoegaze}
+\end{figure}
 
 
 \newline \,\,
